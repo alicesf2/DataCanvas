@@ -1,4 +1,5 @@
 const SVG = require('svg.js');
 
-var draw = SVG('drawing').size(300, 300);
-var rect = draw.rect(100, 100).attr({ fill: '#f06' });
+var draw = SVG('drawing').size(500, 500);
+var leftBound = draw.line(100, 100, 100, 400)
+    .stroke({width : 5, color: "rgb(139, 63, 47)", linecap: "round"});
