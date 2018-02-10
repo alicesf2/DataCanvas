@@ -10,40 +10,44 @@
     <h1>
       Data Canvas
     </h1>
-    <!dropdown menu to choose data structure-->
-    <div class="dropdown open">
-      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Choose
-      </button>
-      <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
-          <div class="dropdown open">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Linked List
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+    <nav>
+      <ul class="nav nav-pills">
+        <li class="nav-item">
+          <a href="#" class="nav-link active">Welcome</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Linked List</a>
+          <div class="dropdown-menu">
             <ul>
-              <li><a class="dropdown-item" href="#">assign head</a></li>
-              <li><a class="dropdown-item" href="#">insert node</a></li>
-              <li><a class="dropdown-item" href="#">remove node</a></li>
+              <li><a class="dropdown-item" href="#">Assign Head</a></li>
+              <li><a class="dropdown-item" href="#">Insert Node</a></li>
+              <li><a class="dropdown-item" href="#">Remove Node</a></li>
             </ul>
-            </div>
           </div>
-          <div class="dropdown open">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Stack
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
-              <ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Stack</a>
+          <div class="dropdown-menu">
+            <ul>
               <li><a class="dropdown-item" href="#">Push</a></li>
               <li><a class="dropdown-item" href="#">Pop</a></li>
               <li><a class="dropdown-item" href="#">Clear</a></li>
             </ul>
-            </div>
           </div>
-          <li><a class="dropdown-item" href="#">Queue</a></li>
-        </ul>
-      </div>
-    </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Queue</a>
+          <div class="dropdown-menu">
+            <ul>
+              <li><a class="dropdown-item" href="#">Enqueue</a></li>
+              <li><a class="dropdown-item" href="#">Dequeue</a></li>
+              <li><a class="dropdown-item" href="#">Peek</a></li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </nav>
+
       <div class = "box2">
         <svg width="400" height="180">
           <rect x="50" y="20" width="150" height="150"
