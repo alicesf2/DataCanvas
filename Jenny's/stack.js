@@ -92,20 +92,29 @@ class Data {
     this.group.add(this.name);
     }
   // animate the entire data chunk along a parabola
-  animate_data(parabola) {
+  animate_data(parabola, clear) {
     let parabola_length = parabola.length()
     this.group.animate({duration: 1000, ease: 'quadInOut'})
-        .duringAll((pos, morph, eased) => {
+        .during((pos, morph, eased) => {
             let c = parabola.pointAt(eased * parabola_length);
             this.data.center(c.x, c.y);
             this.name.center(c.x, c.y);
             this.group.style(`transform: rotate(${eased * 360}deg); transform-origin: ${this.data.cx()}px ${this.data.cy()}px;`);
-    })
+        // if want to clear the data, delay 1s and fade it
+      })//.after(()=>{})
+    if (clear) {
+      this.data.animate(700, "<", 1000).fill({color: "rgb(255, 255, 255)"}).stroke({color: "rgb(255, 255, 255)"});
+      this.name.animate(700, "<", 1000).font({fill: "rgb(255, 255, 255)"})
+          .after(()=>{
+            this.group.remove();
+          });
+    }
   }
   cx() { return this.data.cx()}
   cy() { return this.data.cy()}
   width() {return this.data.width()}
   height() {return this.data.height()}
+  clear() {this.group.clear()}
 }
 
 
@@ -154,17 +163,20 @@ function push() {
   input.value = "";
   var data = new Data(data_name);
   stack_data.push(data);
-  move(draw_parabola("push", data), data)
+  var parabola = draw_parabola("push", data);
+  data.animate_data(parabola, false);
+  parabola.remove();
 }
 function pop() {
   var data = stack_data.pop();
-  move(draw_parabola("pop", data), data)
+  if (data != undefined) {
+    var parabola = draw_parabola("pop", data);
+    data.animate_data(parabola, true);
+    parabola.remove();
+    delete data;
+  }
 }
 
-// helper function for push() and pop()
-function move(parabola, data) {
-  data.animate_data(parabola);
-}
 
 
 
