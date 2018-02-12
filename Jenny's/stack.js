@@ -65,6 +65,6 @@ push_button.onclick = ()=> {
         // let c = line_path.pointAt(eased * line_path.length());
         let c = data_porabola.pointAt(eased * data_porabola_length);
         data.center(c.x, c.y);
-        // data.rotate(eased * 180);
+        data.rotate(eased * 180);
       })
     }
