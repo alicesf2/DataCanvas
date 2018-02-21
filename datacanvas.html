@@ -3,7 +3,7 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
+  <link rel="stylesheet" type="text/css" href="style.css" />
   <link rel="stylesheet" type="text/css" href="theme.css" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -15,37 +15,18 @@
     <nav>
       <ul class="nav nav-pills">
         <li class="nav-item">
-          <a href="#" class="nav-link active">Welcome</a>
+          <button id = "list" onclick = "showButtons()" id = "list"> Linked List </button>
+          <script type = "text/javascript">
+          function showButtons() {
+            console.log("show buttons");
+          }
+        </script>
         </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Linked List</a>
-          <div class="dropdown-menu">
-            <ul>
-              <li><a class="dropdown-item" href="#">Assign Head</a></li>
-              <li><a class="dropdown-item" href="#">Insert Node</a></li>
-              <li><a class="dropdown-item" href="#">Remove Node</a></li>
-            </ul>
-          </div>
+        <li class = "nav-item">
+          <a href="#" class="nav-link">Stack</a>
         </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Stack</a>
-          <div class="dropdown-menu">
-            <ul>
-              <li><a class="dropdown-item" href="#">Push</a></li>
-              <li><a class="dropdown-item" href="#">Pop</a></li>
-              <li><a class="dropdown-item" href="#">Clear</a></li>
-            </ul>
-          </div>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Queue</a>
-          <div class="dropdown-menu">
-            <ul>
-              <li><a class="dropdown-item" href="#">Enqueue</a></li>
-              <li><a class="dropdown-item" href="#">Dequeue</a></li>
-              <li><a class="dropdown-item" href="#">Peek</a></li>
-            </ul>
-          </div>
+        <li class = "nav-item">
+          <a href="#" class="nav-link">Queue</a>
         </li>
       </ul>
     </nav>
