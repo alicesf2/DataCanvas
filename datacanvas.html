@@ -15,12 +15,19 @@
     <nav>
       <ul class="nav nav-pills">
         <li class="nav-item">
-          <button id = "list" onclick = "showButtons()" id = "list"> Linked List </button>
+          <input type = "button" id = "toggler" value = "Linked List" onclick = "showButtons()"/>
+          <input type = "button" id = "togglee" value = "insertNode"/>
           <script type = "text/javascript">
-          function showButtons() {
-            console.log("show buttons");
-          }
-        </script>
+            var hidden = false;
+            function showButtons() {
+              hidden = !hidden;
+              if(hidden) {
+                document.getElementById('togglee').style.visibility = 'hidden';
+              } else {
+                document.getElementById('togglee').style.visibility = 'visible';
+              }
+            }
+          </script>
         </li>
         <li class = "nav-item">
           <a href="#" class="nav-link">Stack</a>
