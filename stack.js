@@ -1,8 +1,8 @@
 // stack properties and coordinates
 const stack_height = 250,
       stack_width = 150,
-      stack_cx = 300,
-      stack_cy = 300,
+      stack_cx = 230,
+      stack_cy = 250,
       stack_frame_color = "rgb(87, 43, 15)",
       stack_fill_color = "rgb(255, 255, 255)",
       stack_stroke_width = 5,
@@ -16,7 +16,7 @@ const stack_height = 250,
 // output bowl parameters
       output_width = 200,
       output_height = 150,
-      output_cx = 550,
+      output_cx = 480,
       output_cy = BOTTOM_COORD - output_height/2,
       output_stroke_color = "rgb(34, 56, 88)",
       output_stroke_width = 5,
@@ -31,8 +31,8 @@ const stack_height = 250,
       data_round_value = 15,
       data_width = 130,
       data_height = 50,
-      data_init_cx = 110,
-      data_init_cy = stack_cy - (stack_height-stack_cover_height)/2,
+      data_init_cx = 70,
+      data_init_cy = stack_cy - (stack_height-stack_cover_height)/4,
 // the data name parameters
       red_data_name_color = "rgb(255, 228, 221)",
       data_name_size = 25;
@@ -42,83 +42,83 @@ const stack_height = 250,
 // max data number
       max_num_data = 5;
 
+var draw, stack_rect, stack_top_cover, stack_label, stack_group,
+    output, output_frame, output_cover, output_label, static_bg;
+
+draw = SVG('stackAnimation').size(0,0);
+
+function drawStack() {
+
+  // the canvas
+   draw.size(700, 500);
+
+  // the stack group
+  stack_group = draw.group();
+  // stack frame and cover
+  stack_rect = stack_group.rect(stack_width, stack_height)
+        .fill({color: stack_fill_color})
+        .stroke({color : stack_frame_color, width: stack_stroke_width})
+        .attr({rx: stack_round_value, ry: stack_round_value} )
+        .cx(stack_cx).cy(stack_cy);
+  stack_top_cover = stack_group.rect(stack_width, stack_cover_height)
+        .fill({color: stack_fill_color})
+        .stroke({color: stack_fill_color, width: stack_stroke_width + 2})
+        .x(stack_rect.x()).y(stack_rect.y());
+  stack_label = stack_group.plain("Stack")
+        .font({family: label_font, fill: stack_frame_color, size: label_size})
+        .cx(stack_cx).y(BOTTOM_COORD);
+
+  // group the output bowl
+   output = draw.group();
+  // output bowl
+   output_frame = output.ellipse(output_width, output_height)
+        .center(output_cx, output_cy).fill({color: output_fill_color})
+        .stroke({color: output_stroke_color, width: output_stroke_width});
+   output_cover = output.rect(output_width - 20, output_height/2).fill({color: output_fill_color})
+        .center(output_frame.cx(), output_frame.cy() - output_height/3);
+   output_label = output.plain("Output")
+        .font({family: label_font, fill: output_stroke_color, size: label_size})
+        .cx(output_cx).y(BOTTOM_COORD);
 
 
-// the canvas
-var draw = SVG('drawing').size(1000, 500);
-
-
-// stack frame and cover
-var stack_rect = draw.rect(stack_width, stack_height)
-      .fill({color: stack_fill_color})
-      .stroke({color : stack_frame_color, width: stack_stroke_width})
-      .attr({rx: stack_round_value, ry: stack_round_value} )
-      .cx(stack_cx).cy(stack_cy);
-var stack_top_cover = draw.rect(stack_width, stack_cover_height)
-      .fill({color: stack_fill_color})
-      .stroke({color: stack_fill_color, width: stack_stroke_width + 2})
-      .x(stack_rect.x()).y(stack_rect.y());
-var stack_label = draw.plain("Stack")
-      .font({family: label_font, fill: stack_frame_color, size: label_size})
-      .cx(stack_cx).y(BOTTOM_COORD);
-
-// the entire stack is grouped
-var stack = draw.group();
-stack.add(stack_rect)
-stack.add(stack_top_cover)
-stack.add(stack_label)
-
-// group the output bowl
-var output = draw.group();
-// output bowl
-var output_frame = output.ellipse(output_width, output_height)
-      .center(output_cx, output_cy).fill({color: output_fill_color})
-      .stroke({color: output_stroke_color, width: output_stroke_width});
-var output_cover = output.rect(output_width - 20, output_height/2).fill({color: output_fill_color})
-      .center(output_frame.cx(), output_frame.cy() - output_height/3);
-var output_label = output.plain("Output")
-      .font({family: label_font, fill: output_stroke_color, size: label_size})
-      .cx(output_cx).y(BOTTOM_COORD);
-
-
-// group everything on the background (the stack and the output)
-var static_bg = draw.group();
-static_bg.add(stack);
-static_bg.add(output);
-// put the background on the back
-static_bg.back()
-
-// the y value of top of all the data stacked together
-var stack_upon_y;
-
-// drawing the parabola as a path
-function draw_parabola(push_or_pop, data) {
-  var c_x1, c_x2, c_y1, c_y2, c_end_x, c_end_y;
-  if (push_or_pop == "push") {
-    // setting parameters for push parabola
-    c_x1 = (stack_rect.x() + data.cx()) / 2;
-    c_y1 = 10;
-    c_x2 = stack_rect.cx() + (stack_rect.cx() - data.cx())/10;
-    c_y2 = 0; //- (stack_rect.cx() - data.cx())/4;
-    c_end_x = stack_rect.cx();
-    c_end_y = stack_upon_y;
-  } else {
-    // add pop parabola
-    c_x1 = stack_rect.cx();
-    c_y1 = 0;
-    c_x2 = output_cx;
-    c_y2 = 0;
-    c_end_x = output_cx;
-    c_end_y = output_cy + 33;
-  }
-
-  // path: M startx starty  C (curve) x1 y1, x2 y2, endx endy
-  return draw.path(`M ${data.cx()} ${data.cy()}
-             C ${c_x1} ${c_y1}, ${c_x2} ${c_y2}, ${c_end_x} ${c_end_y} `)
-             // enable this line below to see the path
-             // .stroke({color: "rgb(149, 149, 149)", width: 3})
-             .fill({color: "none"});
+  // group everything on the background (the stack and the output)
+   static_bg = draw.group();
+  static_bg.add(stack_group);
+  static_bg.add(output);
+  // put the background on the back
+  static_bg.back()
 }
+  // the y value of top of all the data stacked together
+  var stack_upon_y;
+
+  // drawing the parabola as a path
+  function draw_parabola(push_or_pop, data) {
+    var c_x1, c_x2, c_y1, c_y2, c_end_x, c_end_y;
+    if (push_or_pop == "push") {
+      // setting parameters for push parabola
+      c_x1 = (stack_rect.x() + data.cx()) / 2;
+      c_y1 = 10;
+      c_x2 = stack_rect.cx() + (stack_rect.cx() - data.cx())/10;
+      c_y2 = 0; //- (stack_rect.cx() - data.cx())/4;
+      c_end_x = stack_rect.cx();
+      c_end_y = stack_upon_y;
+    } else {
+      // add pop parabola
+      c_x1 = stack_rect.cx();
+      c_y1 = 0;
+      c_x2 = output_cx;
+      c_y2 = 0;
+      c_end_x = output_cx;
+      c_end_y = output_cy + 33;
+    }
+
+    // path: M startx starty  C (curve) x1 y1, x2 y2, endx endy
+    return draw.path(`M ${data.cx()} ${data.cy()}
+               C ${c_x1} ${c_y1}, ${c_x2} ${c_y2}, ${c_end_x} ${c_end_y} `)
+               // enable this line below to see the path
+               // .stroke({color: "rgb(149, 149, 149)", width: 3})
+               .fill({color: "none"});
+  }
 
 var animate_property = {duration: 800, ease: 'quadInOut'};
 
@@ -168,6 +168,11 @@ class Data {
   backward() {this.group.backward();}
 }
 
+function clearStack() {
+  draw.clear();
+  draw.size(0, 0);
+  stack_data.length = 0;
+}
 
 // a list of stack data
 var stack_data = []
