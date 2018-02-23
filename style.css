@@ -41,3 +41,10 @@ nav {
 .flex-item {
   padding: 5px;
 }
+.outline {
+  border: 1px solid transparent;
+  border-color: #695548;
+  background-image: none;
+  background-color: transparent;
+  color: #695548;
+}
