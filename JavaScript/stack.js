@@ -137,6 +137,9 @@ class Data {
     this.group.add(this.name);
     }
   // animate the entire data chunk along a parabola
+  // clear and toFront are true when pop, and false when push
+  // clear: boolean: whether to clear this data after pop
+  // toFront: boolean: whether to bring this data to the front so that it covers the one popped before it
   animate_data(parabola, clear, toFront) {
     let parabola_length = parabola.length()
     this.group.animate(animate_property) // duration: 1500 , ease: 'bounce'
