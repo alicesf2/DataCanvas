@@ -1,12 +1,12 @@
 /*!
 * svg.js - A lightweight library for manipulating and animating SVG.
-* @version 2.6.3
+* @version 2.6.4
 * https://svgdotjs.github.io/
 *
 * @copyright Wout Fierens <wout@mick-wout.com>
 * @license MIT
 *
-* BUILT: Fri Jul 21 2017 14:50:37 GMT+0200 (Mitteleuropäische Sommerzeit)
+* BUILT: Wed Feb 07 2018 22:59:25 GMT+0100 (Mitteleuropäische Zeit)
 */;
 (function(root, factory) {
   /* istanbul ignore next */
@@ -2272,7 +2272,7 @@ SVG.BBox = SVG.invent({
     if (element instanceof SVG.Element) {
       var box
 
-      // yes this is ugly, but Firefox can be a bitch when it comes to elements that are not yet rendered
+      // yes this is ugly, but Firefox can be a pain when it comes to elements that are not yet rendered
       try {
 
         if (!document.documentElement.contains){
@@ -4470,6 +4470,8 @@ SVG.Image = SVG.invent({
 
       // preload image
       SVG.on(img, 'load', function() {
+        SVG.off(img)
+
         var p = self.parent(SVG.Pattern)
 
         if(p === null) return
@@ -4493,6 +4495,8 @@ SVG.Image = SVG.invent({
       })
 
       SVG.on(img, 'error', function(e){
+        SVG.off(img)
+
         if (typeof self._error === 'function'){
             self._error.call(self, e)
         }
