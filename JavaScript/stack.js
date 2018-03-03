@@ -35,10 +35,10 @@ const stack_height = 250,
       data_init_cy = stack_cy - (stack_height-stack_cover_height)/4,
 // the data name parameters
       red_data_name_color = "rgb(255, 228, 221)",
-      data_name_size = 25;
-      data_name_font = "palatino";
+      data_name_size = 25,
+      data_name_font = "palatino",
 // gap between each data
-      data_stack_gap = 2;
+      data_stack_gap = 2,
 // max data number
       max_num_data = 5;
 

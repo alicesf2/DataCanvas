@@ -30,7 +30,6 @@ const q_cx = 400,
     q_frame_color = '#7b2d26',
     empty = '#FFFFFF',
 //numbers
-    max_num_data = 7,
     data_queue_gap = 2,
     data_max = 4,
 //data name color arr
