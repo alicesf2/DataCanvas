@@ -14,8 +14,8 @@ q.isempty()
     // lower_y = 200;
 const q_cx = 400,
     q_cy = 200,
-    q_struct_width = 450,
-    q_struct_height = 100,
+    q_struct_width = 480,
+    q_struct_height = 110,
     q_stroke_width = 5,
 //bounds
     LEFT = q_cx - q_struct_width / 2,
@@ -35,19 +35,25 @@ const q_cx = 400,
 //labels
     label_font = "comic sans ms",
     label_size = 30,
-    elem_label_size = 15,
+    elem_label_size = 23,
 //colors
     q_frame_color = '#7b2d26',
-    q_data_color = '#05a8aa',
     empty = '#FFFFFF',
 //numbers
     max_num_data = 7,
     data_queue_gap = 2,
+    data_max = 4,
 //data name color arr
-    name_arr = [q_frame_color];//const?
+    data_stroke_width = 5,
+    name_arr = ['#e0f6f5', '#f5f5f5', '#ffe1d4'],//const?
+    fill_cr_arr = ['#05a8aa', '#aba194', '#ab4a43'],
+    stroke_cr_arr = ['#0b7a75', '#634e32', '#7b2d26'];
+
 
 //name arr index
-    var name_arr_idx = 0;
+var data_idx = 0;
+var duration = 1000;
+var move_to_cx = 0;
 
 //canvas
 var draw = SVG('drawing').size(800, 600)
@@ -109,76 +115,44 @@ static_bg.back();
 //                 .fill({color: "none"});
 // }
 
-class Queue_elem {
-    constructor(name) {
-        this.data = draw.rect(data_elem_width, data_elem_height)
-                            .fill(q_data_color)
-                            .cx(data_l_cx)
-                            .cy(data_l_cy)
-                            .radius(10, 20);
-        this.name = draw.plain(name)
-                        .font({fill: name_arr[name_arr_idx], family: label_font, size: elem_label_size});
-        this.name.center(data_l_cx, data_l_cy);
 
-        this.group = draw.group();
-        this.group.add(this.data);
-        this.group.add(this.name);
-
-    }
-
-    animate_data(line, clear, toFront) {
-        let line_len = line.length();
-        this.group.animate(animate_property)
-            .during((pos, morph, eased) => {
-                let c =
-                this.data.center(c.x, c.y);
-
-            })
-
-    }
-
-    x(){
-        return this.data.x();
-    }
-    y(){
-        return this.data.y();
-    }
-    cx(){
-        return this.data.cx();
-    }
-    cy(){
-        return this.data.cy();
-    }
-    width(){
-        return this.data.width();
-    }
-    height(){
-        return this.data.height();
-    }
-    clear(){
-        this.group.clear();
-    }
-    backward(){
-        this.group.backward();
-    }
+function createData(name) {
+  group = draw.group();
+  data = group.rect(data_elem_width, data_elem_height)
+                      .fill(fill_cr_arr[data_idx])
+                      .cx(data_l_cx)
+                      .cy(data_l_cy)
+                      .radius(20, 20)
+                      .stroke({color: stroke_cr_arr[data_idx], width: data_stroke_width});
+  name = group.plain(name).font({fill: name_arr[data_idx], family: label_font, size: elem_label_size});
+  data_idx += 1;
+  data_idx %= fill_cr_arr.length;
+  name.center(data_l_cx, data_l_cy);
+  return group;
 }
+
 
 var q_data = []
 
 function enqueue(){
     var data_name = input.value;
     input.value = "";
-    var data = new Queue_elem(data_name);
+    var data = createData(data_name);
 
+    if (q_data.length <= data_max) {
+      move_to_cx = RIGHT - (q_data.length + 1/2) * (data_elem_width + data_stroke_width) - data_l_cx - data_stroke_width;
+    } else {
+      move_to_cx = RIGHT - q_data.length * 3 - (data_max + 1/2) * (data_elem_width + data_stroke_width) - data_l_cx;
+    }
+    duration = Math.abs(move_to_cx) * 2;
+    data.animate(duration, "<>", 400).x(move_to_cx);
+    q_data.splice(0, 0, data);
 }
 
 function dequeue(){
     var data = q_data.shift();
     if (data != undefined){
-        var line = draw_line(false, data);
-        data.animate_data(line, true, true);
-        //move other data
-        line.remove();
+        // data.animate();
         delete data;
     }
 }
