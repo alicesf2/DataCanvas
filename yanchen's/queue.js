@@ -46,9 +46,9 @@ const q_cx = 400,
     data_max = 4,
 //data name color arr
     data_stroke_width = 5,
-    name_arr = ['#e0f6f5', '#f5f5f5', '#ffe1d4'],//const?
-    fill_cr_arr = ['#05a8aa', '#aba194', '#ab4a43'],
-    stroke_cr_arr = ['#0b7a75', '#634e32', '#7b2d26'];
+    name_arr = ['#ffe1d4', '#e0f6f5', '#f5f5f5'],//const?
+    fill_cr_arr = ['#ab4a43', '#05a8aa', '#aba194'],
+    stroke_cr_arr = ['#7b2d26', '#0b7a75', '#634e32'];
 
 
 //name arr index
@@ -120,15 +120,14 @@ static_bg.back();
 function createData(name) {
   group = draw.group();
   data = group.rect(data_elem_width, data_elem_height)
-                      .fill(fill_cr_arr[data_idx])
+                      .fill(empty)
                       .cx(data_l_cx)
                       .cy(data_l_cy)
                       .radius(20, 20)
-                      .stroke({color: stroke_cr_arr[data_idx], width: data_stroke_width});
-  name = group.plain(name).font({fill: name_arr[data_idx], family: label_font, size: elem_label_size});
-  data_idx += 1;
-  data_idx %= fill_cr_arr.length;
+                      .stroke({color: empty, width: data_stroke_width});
+  name = group.plain(name).font({fill: empty, family: label_font, size: elem_label_size});
   name.center(data_l_cx, data_l_cy);
+  group.back();
   return group;
 }
 
@@ -139,21 +138,26 @@ function enqueue(){
     var data_name = input.value;
     input.value = "";
     var data = createData(data_name);
-
+    // determine where to move to
     if (q_data.length <= data_max) {
       move_to_cx = RIGHT - (q_data.length + 1/2) * (data_elem_width + data_stroke_width) - data_l_cx - data_stroke_width;
     } else {
       move_to_cx = RIGHT - q_data.length * 3 - (data_max + 1/2) * (data_elem_width + data_stroke_width) - data_l_cx;
     }
     duration = Math.abs(move_to_cx) * 2;
-    data.animate(duration, "<>", 400).x(move_to_cx);
+    data.get(0).animate(500).stroke({color: stroke_cr_arr[data_idx]}).fill(fill_cr_arr[data_idx]);
+    data.get(1).animate(500).font({fill: name_arr[data_idx]});
+    data.animate(duration, "<>", 500).x(move_to_cx);
+    data_idx += 1;
+    data_idx %= fill_cr_arr.length;
     q_data.push(data);
 }
 
 function dequeue(){
     var data = q_data.shift();
     if (data != undefined){
-        data.animate(500, "-").x(data_output_x).after(()=>{
+      data.front();
+      data.animate(500, "-").x(data_output_x).after(()=>{
           for (var i = 0; i < q_data.length; i++) {
             if (i == 0) {
               q_data[i].animate(300).dx(data_elem_width + data_stroke_width);
