@@ -37,7 +37,6 @@ const q_cx = 400,
     name_arr = ['#ffe1d4', '#e0f6f5', '#f5f5f5'],//const?
     fill_cr_arr = ['#ab4a43', '#05a8aa', '#aba194'],
     stroke_cr_arr = ['#7b2d26', '#0b7a75', '#634e32'];
-data_stroke_width = 5;
 
 //name arr index
 var data_idx = 0;
