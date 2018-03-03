@@ -35,25 +35,25 @@ const stack_height = 250,
       data_init_cy = stack_cy - (stack_height-stack_cover_height)/4,
 // the data name parameters
       red_data_name_color = "rgb(255, 228, 221)",
-      data_name_size = 25;
-      data_name_font = "palatino";
+      data_name_size = 25,
+      data_name_font = "palatino",
 // gap between each data
-      data_stack_gap = 2;
+      data_stack_gap = 2,
 // max data number
       max_num_data = 5;
 
-var draw, stack_rect, stack_top_cover, stack_label, stack_group,
+var stack_draw, stack_rect, stack_top_cover, stack_label, stack_group,
     output, output_frame, output_cover, output_label, static_bg;
 
-draw = SVG('stackAnimation').size(0,0);
+stack_draw = SVG('stackAnimation').size(0,0);
 
 function drawStack() {
 
   // the canvas
-   draw.size(700, 500);
+   stack_draw.size(700, 500);
 
   // the stack group
-  stack_group = draw.group();
+  stack_group = stack_draw.group();
   // stack frame and cover
   stack_rect = stack_group.rect(stack_width, stack_height)
         .fill({color: stack_fill_color})
@@ -69,7 +69,7 @@ function drawStack() {
         .cx(stack_cx).y(BOTTOM_COORD);
 
   // group the output bowl
-   output = draw.group();
+   output = stack_draw.group();
   // output bowl
    output_frame = output.ellipse(output_width, output_height)
         .center(output_cx, output_cy).fill({color: output_fill_color})
@@ -82,7 +82,7 @@ function drawStack() {
 
 
   // group everything on the background (the stack and the output)
-   static_bg = draw.group();
+   static_bg = stack_draw.group();
   static_bg.add(stack_group);
   static_bg.add(output);
   // put the background on the back
@@ -113,7 +113,7 @@ function drawStack() {
     }
 
     // path: M startx starty  C (curve) x1 y1, x2 y2, endx endy
-    return draw.path(`M ${data.cx()} ${data.cy()}
+    return stack_draw.path(`M ${data.cx()} ${data.cy()}
                C ${c_x1} ${c_y1}, ${c_x2} ${c_y2}, ${c_end_x} ${c_end_y} `)
                // enable this line below to see the path
                // .stroke({color: "rgb(149, 149, 149)", width: 3})
@@ -125,14 +125,14 @@ var animate_property = {duration: 800, ease: 'quadInOut'};
 // a data in the stack
 class Data {
   constructor(data_name) {
-    this.data = draw.rect(data_width, data_height).fill({color : red_data_fill})
+    this.data = stack_draw.rect(data_width, data_height).fill({color : red_data_fill})
           .stroke({color : red_data_stroke, width : data_stroke_width})
           .attr({rx : data_round_value, ry : data_round_value})
           .cx(data_init_cx).cy(data_init_cy);
-    this.name = draw.plain(data_name)
+    this.name = stack_draw.plain(data_name)
           .font({fill: red_data_name_color, family: data_name_font, size: data_name_size});
     this.name.center(data_init_cx - this.name.width()/4, data_init_cy - this.name.height()/3)
-    this.group = draw.group();
+    this.group = stack_draw.group();
     this.group.add(this.data);
     this.group.add(this.name);
     }
@@ -171,14 +171,14 @@ class Data {
   backward() {this.group.backward();}
 }
 
-function clearStack() {
-  draw.clear();
-  draw.size(0, 0);
-  stack_data.length = 0;
-}
-
 // a list of stack data
 var stack_data = []
+
+function clearStack() {
+  stack_draw.clear();
+  stack_draw.size(0, 0);
+  stack_data.length = 0;
+}
 
 // functions that once called, move the data in/out the stack
 function push() {
@@ -223,7 +223,7 @@ function bounce() {
 // connect functions to buttons
 var push_button = document.getElementById("push"),
     pop_button = document.getElementById("pop"),
-    input = document.getElementById("data"),
+    input = document.getElementById("stackData"),
     bounce_checkbox = document.getElementById("bounce");
 
 
