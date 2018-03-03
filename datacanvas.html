@@ -31,7 +31,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text outline" >Data</span>
             </div>
-            <input type="text" class="form-control" value="myData" id="data">
+            <input type="text" class="form-control" value="myData" id="stackData">
           </div>
           <!-- push and pop -->
           <div class="flex-item">
@@ -40,7 +40,7 @@
           <div class="flex-item">
             <button type="button" class="btn btn-outline-success" id="pop">Pop</button>
           </div>
-
+          <!-- bounce checkbox -->
           <div class="input-group flex-item" style="width: auto;">
             <div class="input-group-prepend">
               <span class="input-group-text outline">
@@ -52,28 +52,40 @@
             </div>
           </div>
         </div>
+      </div>
 
+      <!-- queue inputs -->
+      <div class="center mt-2 myHide" id="queueInputs">
+        <div class="center" style="width: 80%;">
+          <!-- data input -->
+          <div class="input-group flex-item" style="width: auto;">
+            <div class="input-group-prepend">
+              <span class="input-group-text outline" >Data</span>
+            </div>
+            <input type="text" class="form-control" value="myData" id="queueData">
+          </div>
+          <!-- enqueue and dequeue -->
+          <div class="flex-item">
+            <button type="button" class="btn btn-outline-primary"id="enqueue">Enqueue</button>
+          </div>
+          <div class="flex-item">
+            <button type="button" class="btn btn-outline-success" id="dequeue">Dequeue</button>
+          </div>
+        </div>
       </div>
 
       <div class="center" id="container">
         <!-- stack animation  -->
         <div id="stackAnimation" class="myHide"></div>
-
         <!-- linked list animation -->
         <div id="linkedListAnimation" class="myHide text-center">
           <div class="centered">
             <h1>Coming soon</h1>
           </div>
         </div>
-
         <!-- queue animation -->
-        <div id="queueAnimation" class="myHide text-center">
-          <div class="centered">
-            <h1>Coming soon</h1>
-          </div>
-        </div>
-
-        <!-- the purple box -->
+        <div id="queueAnimation" class="myHide text-center"></div>
+        <!-- the default background -->
         <div class = "box2" id="defaultPicture">
           <!-- <svg width="400" height="180">
             <rect x="50" y="20" width="150" height="150"
@@ -89,6 +101,7 @@
   <script type="text/javascript" src="JavaScript/SVG.js"></script>
   <script type="text/javascript" src="node_modules/svg.easing.js/dist/svg.easing.js"></script>
   <script type="text/javascript" src="JavaScript/stack.js"></script>
+  <script type="text/javascript" src="JavaScript/queue.js"></script>
   <script type="text/javascript" src="JavaScript/main.js"></script>
 
 
