@@ -32,6 +32,7 @@ const q_cx = 400,
     data_elem_height = 90,
     data_l_cx = LEFT - data_elem_width,
     data_l_cy = q_cy,
+    data_output_x = RIGHT + data_elem_width / 2,
 //labels
     label_font = "comic sans ms",
     label_size = 30,
@@ -56,7 +57,7 @@ var duration = 1000;
 var move_to_cx = 0;
 
 //canvas
-var draw = SVG('drawing').size(800, 600)
+var draw = SVG('drawing').size(900, 600)
 //queue structure
 var upper = draw.line(LEFT, UPPER, RIGHT, UPPER)
     upper.stroke({ color: q_frame_color, width: q_stroke_width, linecap: 'round' });
@@ -146,13 +147,27 @@ function enqueue(){
     }
     duration = Math.abs(move_to_cx) * 2;
     data.animate(duration, "<>", 400).x(move_to_cx);
-    q_data.splice(0, 0, data);
+    q_data.push(data);
 }
 
 function dequeue(){
     var data = q_data.shift();
     if (data != undefined){
-        // data.animate();
+        data.animate(500, "-").x(data_output_x).after(()=>{
+          for (var i = 0; i < q_data.length; i++) {
+            if (i == 0) {
+              q_data[i].animate(300).dx(data_elem_width + data_stroke_width);
+            } else {
+              q_data[i].animate(300).x(q_data[i-1].x());
+            }
+          }
+        }).after(()=>{
+          data.get(0).animate(500, "<", 500).fill({color: "#ffffff"}).stroke({color: "#ffffff"});
+          data.get(1).animate(500, "<", 500).font({fill: "rgb(255, 255, 255)"})
+              .after(()=>{
+                data.remove();
+              });
+        })
         delete data;
     }
 }
