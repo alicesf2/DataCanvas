@@ -50,7 +50,7 @@ stack_draw = SVG('stackAnimation').size(0,0);
 function drawStack() {
 
   // the canvas
-   stack_draw.size(700, 500);
+   stack_draw.size(700, 430);
 
   // the stack group
   stack_group = stack_draw.group();
@@ -82,7 +82,7 @@ function drawStack() {
 
 
   // group everything on the background (the stack and the output)
-   static_bg = stack_draw.group();
+  static_bg = stack_draw.group();
   static_bg.add(stack_group);
   static_bg.add(output);
   // put the background on the back
@@ -130,6 +130,7 @@ var animate_property = {duration: 800, ease: 'quadInOut'};
 // a data in the stack
 class Data {
   constructor(data_name) {
+    this.name_ = data_name;
     this.data = stack_draw.rect(data_width, data_height).fill({color : red_data_fill})
           .stroke({color : red_data_stroke, width : data_stroke_width})
           .attr({rx : data_round_value, ry : data_round_value})
@@ -142,25 +143,22 @@ class Data {
     this.group.add(this.name);
     }
   // animate the entire data chunk along a parabola
-  // clear and toFront are true when pop, and false when push
-  // clear: boolean: whether to clear this data after pop
-  // toFront: boolean: whether to bring this data to the front so that it covers the one popped before it
-  animate_data(parabola, clear, toFront) {
+  animate_data(parabola, pop) {
     let parabola_length = parabola.length()
     this.group.animate(animate_property) // duration: 1500 , ease: 'bounce'
         .during((pos, morph, eased) => {
             let c = parabola.pointAt(eased * parabola_length);
             this.data.center(c.x, c.y);
             this.name.center(c.x, c.y - 1);
-            if (toFront && eased > 0.5 && eased < 0.6) {
+            if (pop && eased > 0.5 && eased < 0.6) {
               this.group.front();
             }
             this.group.style(`transform: rotate(${eased * 360}deg); transform-origin: ${this.data.cx()}px ${this.data.cy()}px;`);
         // if want to clear the data, delay 1s and fade it
       })//.after(()=>{})
-    if (clear) {
-      this.data.animate(700, "<", 1000).fill({color: "rgb(255, 255, 255)"}).stroke({color: "rgb(255, 255, 255)"});
-      this.name.animate(700, "<", 1000).font({fill: "rgb(255, 255, 255)"})
+    if (pop) {
+      this.data.animate(700, "<", animate_property.duration).fill({color: "rgb(255, 255, 255)"}).stroke({color: "rgb(255, 255, 255)"});
+      this.name.animate(700, "<", animate_property.duration).font({fill: "rgb(255, 255, 255)"})
           .after(()=>{
             this.group.remove();
           });
@@ -189,7 +187,7 @@ function clearStack() {
 function push() {
   var data_name = input.value;
   input.value = "";
-  var data = new Data(data_name);
+  let data = new Data(data_name);
   // change the top y value to land
   if (0 < stack_data.length && stack_data.length < max_num_data) {
     stack_upon_y = BOTTOM_COORD - stack_data.length * data_height - data_height/2 - data_stroke_width - data_stack_gap;
@@ -198,15 +196,16 @@ function push() {
   } else {
     stack_upon_y = BOTTOM_COORD - data_height/2 - data_stroke_width/2 - stack_stroke_width/2 - data_stack_gap;
   }
-
+  console.log("pushing to stack: " + data.name_);
   stack_data.push(data);
   var parabola = draw_parabola("push", data);
-  data.animate_data(parabola, false, false);
+  data.animate_data(parabola, false);
   parabola.remove();
 }
 
 function pop() {
-  var data = stack_data.pop();
+  let data = stack_data.pop();
+  console.log("popping out: " + data.name_);
   if (data != undefined) {
     if (0 < stack_data.length && stack_data.length < max_num_data) {
       pop_from_y = BOTTOM_COORD - stack_data.length * data_height - data_height/2 - data_stroke_width - data_stack_gap;
@@ -216,7 +215,7 @@ function pop() {
       pop_from_y = BOTTOM_COORD - data_height/2 - data_stroke_width/2 - stack_stroke_width/2 - data_stack_gap;
     }
     var parabola = draw_parabola("pop", data);
-    data.animate_data(parabola, true, true);
+    data.animate_data(parabola, true);
     parabola.remove();
     delete data;
   }

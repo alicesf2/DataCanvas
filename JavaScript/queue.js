@@ -46,7 +46,7 @@ var move_to_cx = 0;
 var queue_draw = SVG('queueAnimation').size(0, 0);
 
 function drawQueue() {
-  queue_draw.size(810, 600);
+  queue_draw.size(810, 340);
   //queue structure
   var upper = queue_draw.line(LEFT, UPPER, RIGHT, UPPER)
       upper.stroke({ color: q_frame_color, width: q_stroke_width, linecap: 'round' });
