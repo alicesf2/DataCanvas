@@ -32,8 +32,8 @@ const q_cx = 400,
     data_queue_gap = 2,
     data_max = 5,
     //data name color arr
-    // name_arr = ['#ffe1d4', '#e0f6f5', '#f5f5f5'],
-    name_arr = [empty, empty, empty],
+    name_arr = ['#ffe1d4', '#e0f6f5', '#f5f5f5'],
+    // name_arr = [empty, empty, empty],
     fill_cr_arr = ['#ab4a43', '#05a8aa', '#aba194'],
     stroke_cr_arr = ['#7b2d26', '#0b7a75', '#634e32'],
     //text wrap threshold
@@ -136,7 +136,7 @@ function splitText(text, hold) {
 //   return group;
 // }
 
-function createData(name) {
+function createData(data_name) {
     group = queue_draw.group();
     data = group.rect(data_elem_width, data_elem_height)
         .fill(empty)
@@ -149,21 +149,23 @@ function createData(name) {
         });
     // name = group.plain(name).font({fill: empty, family: q_label_font, size: elem_label_size});
     // name.center(data_l_cx, data_l_cy);
-    if (name.length < 7) {
-        name = group.plain(name).font({
+    var name_gp = group.group();
+
+    if (data_name.length < threshold) {
+        var name = name_gp.plain(data_name).font({
             fill: empty,
             family: q_label_font,
             size: elem_label_size
         });
         name.center(data_l_cx, data_l_cy);
     } else {
-        var lines = splitText(name, threshold);
+        var lines = splitText(data_name, threshold);
         // var line = [];
         console.log("lines.length " + lines.length);
         var recenter = data_l_cy;
         recenter -= 20 * (lines.length - 1) * 0.5;
         for (var i = 0, j = 0; i < lines.length; i++, j += 20) {
-            line = group.text(lines[i]).font({
+            line = name_gp.text(lines[i]).font({
                 fill: empty,
                 family: q_label_font,
                 size: elem_label_size
@@ -194,9 +196,12 @@ function enqueue() {
     data.get(0).animate(500).stroke({
         color: stroke_cr_arr[data_idx]
     }).fill(fill_cr_arr[data_idx]);
-    data.get(1).animate(500).font({
-        fill: name_arr[data_idx]
-    });
+    var name_gp = data.get(1);
+    for (var i = 0; name_gp.get(i) != undefined; i++){
+        name_gp.get(i).animate(500).font({
+            fill: name_arr[data_idx]
+        });
+    }
     data.animate(enqueue_duration, "<>", 500).x(move_to_cx);
     data_idx += 1;
     data_idx %= fill_cr_arr.length;
