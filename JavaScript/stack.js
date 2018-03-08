@@ -90,20 +90,25 @@ function drawStack() {
 }
   // the y value of top of all the data stacked together
   var stack_upon_y;
+  var pop_from_y;
 
   // drawing the parabola as a path
   function draw_parabola(push_or_pop, data) {
-    var c_x1, c_x2, c_y1, c_y2, c_end_x, c_end_y;
+    var c_x1, c_x2, c_y1, c_y2, c_end_x, c_end_y, start_x, start_y;
     if (push_or_pop == "push") {
       // setting parameters for push parabola
+      start_x = data.cx();
+      start_y = data.cy();
       c_x1 = (stack_rect.x() + data.cx()) / 2;
       c_y1 = 10;
       c_x2 = stack_rect.cx() + (stack_rect.cx() - data.cx())/10;
       c_y2 = 0; //- (stack_rect.cx() - data.cx())/4;
       c_end_x = stack_rect.cx();
       c_end_y = stack_upon_y;
-    } else {
+    } else if (push_or_pop == "pop"){
       // add pop parabola
+      start_x = stack_cx;
+      start_y = pop_from_y;
       c_x1 = stack_rect.cx();
       c_y1 = 0;
       c_x2 = output_cx;
@@ -113,7 +118,7 @@ function drawStack() {
     }
 
     // path: M startx starty  C (curve) x1 y1, x2 y2, endx endy
-    return stack_draw.path(`M ${data.cx()} ${data.cy()}
+    return stack_draw.path(`M ${start_x} ${start_y}
                C ${c_x1} ${c_y1}, ${c_x2} ${c_y2}, ${c_end_x} ${c_end_y} `)
                // enable this line below to see the path
                // .stroke({color: "rgb(149, 149, 149)", width: 3})
@@ -203,6 +208,13 @@ function push() {
 function pop() {
   var data = stack_data.pop();
   if (data != undefined) {
+    if (0 < stack_data.length && stack_data.length < max_num_data) {
+      pop_from_y = BOTTOM_COORD - stack_data.length * data_height - data_height/2 - data_stroke_width - data_stack_gap;
+    } else if (stack_data.length >= max_num_data) {
+      pop_from_y = BOTTOM_COORD - max_num_data * data_height - (stack_data.length - max_num_data) * 1.01 - data_height/2 - data_stroke_width - data_stack_gap;
+    } else {
+      pop_from_y = BOTTOM_COORD - data_height/2 - data_stroke_width/2 - stack_stroke_width/2 - data_stack_gap;
+    }
     var parabola = draw_parabola("pop", data);
     data.animate_data(parabola, true, true);
     parabola.remove();
