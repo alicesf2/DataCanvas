@@ -1,8 +1,17 @@
-
+@import url('https://fonts.googleapis.com/css?family=Gloria+Hallelujah|Roboto+Slab');
 h1 {
   font-size: 40px;
   text-align: center;
   font-family: 'Ubuntu';
+}
+h2 {
+  font-size: 80px;
+  font-family: 'Gloria Hallelujah';
+  -webkit-animation: colorchange 20s infinite alternate;
+}
+h3 {
+  font-size: 30px;
+  font-family: 'Roboto Slab';
 }
 nav {
   font-size: 15px;
@@ -47,4 +56,40 @@ nav {
   background-image: none;
   background-color: transparent;
   color: #695548;
+}
+
+@-webkit-keyframes colorchange {
+  0% {
+    color: #3291cd;
+  }
+  10% {
+    color: #30b038;
+  }
+  20% {
+    color: #de9425;
+  }
+  30% {
+    color: #e75252;
+  }
+  40% {
+    color: #8b87e9;
+  }
+  50% {
+    color: #b654f2;
+  }
+  60% {
+    color: #48c449;
+  }
+  70% {
+    color: #3086bf;
+  }
+  80% {
+    color: #deb922;
+  }
+  90% {
+    color: #32ad0d;
+  }
+  100% {
+    color: #df3c86;
+  }
 }

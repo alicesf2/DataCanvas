@@ -1,13 +1,9 @@
 var defaultBG = document.getElementById("defaultPicture"),
-
     stack = document.getElementById("stackAnimation"),
     stack_input_group = document.getElementById("stackInputs"),
-
     linkedList = document.getElementById("linkedListAnimation"),
-
     queue = document.getElementById("queueAnimation"),
     queue_input_group = document.getElementById("queueInputs"),
-
     stack_button = document.getElementById("stackButton"),
     linkedList_button = document.getElementById("linkedListButton"),
     queue_button = document.getElementById("queueButton"),
