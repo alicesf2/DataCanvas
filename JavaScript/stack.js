@@ -22,7 +22,7 @@ const stack_height = 250,
       output_stroke_width = 5,
       output_fill_color = "rgb(255, 255, 255)",
 // labels for stack and output
-      label_font = "comic sans ms",
+      label_font = "Short Stack",
       label_size = 30,
 // data element properties and coordinates
       red_data_fill = "rgb(249, 109, 109)",
@@ -36,7 +36,7 @@ const stack_height = 250,
 // the data name parameters
       red_data_name_color = "rgb(255, 228, 221)",
       data_name_size = 25,
-      data_name_font = "palatino",
+      data_name_font = "Merriweather",
 // gap between each data
       data_stack_gap = 2,
 // max data number
@@ -66,7 +66,7 @@ function drawStack() {
         .x(stack_rect.x()).y(stack_rect.y());
   stack_label = stack_group.plain("Stack")
         .font({family: label_font, fill: stack_frame_color, size: label_size})
-        .cx(stack_cx).y(BOTTOM_COORD);
+        .cx(stack_cx - 2).y(BOTTOM_COORD+1);
 
   // group the output bowl
    output = stack_draw.group();
@@ -78,7 +78,7 @@ function drawStack() {
         .center(output_frame.cx(), output_frame.cy() - output_height/3);
    output_label = output.plain("Output")
         .font({family: label_font, fill: output_stroke_color, size: label_size})
-        .cx(output_cx).y(BOTTOM_COORD);
+        .cx(output_cx - 2).y(BOTTOM_COORD+1);
 
 
   // group everything on the background (the stack and the output)
@@ -150,7 +150,7 @@ class Data {
             let c = parabola.pointAt(eased * parabola_length);
             this.data.center(c.x, c.y);
             this.name.center(c.x, c.y - 1);
-            if (pop && eased > 0.5 && eased < 0.6) {
+            if (pop && eased > 0.55 && eased < 0.6) {
               this.group.front();
             }
             this.group.style(`transform: rotate(${eased * 360}deg); transform-origin: ${this.data.cx()}px ${this.data.cy()}px;`);
@@ -196,7 +196,7 @@ function push() {
   } else {
     stack_upon_y = BOTTOM_COORD - data_height/2 - data_stroke_width/2 - stack_stroke_width/2 - data_stack_gap;
   }
-  console.log("pushing to stack: " + data.name_);
+  // console.log("pushing to stack: " + data.name_);
   stack_data.push(data);
   var parabola = draw_parabola("push", data);
   data.animate_data(parabola, false);
@@ -205,7 +205,7 @@ function push() {
 
 function pop() {
   let data = stack_data.pop();
-  console.log("popping out: " + data.name_);
+  // console.log("popping out: " + data.name_);
   if (data != undefined) {
     if (0 < stack_data.length && stack_data.length < max_num_data) {
       pop_from_y = BOTTOM_COORD - stack_data.length * data_height - data_height/2 - data_stroke_width - data_stack_gap;
