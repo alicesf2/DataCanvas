@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Gloria+Hallelujah|Roboto+Slab');
+@import url('https://fonts.googleapis.com/css?family=Gloria+Hallelujah|Roboto+Slab|Ubuntu');
 h1 {
   font-size: 40px;
   text-align: center;
@@ -19,21 +19,30 @@ nav {
   margin-left: auto;
   margin-right: auto;
 }
-.box2 {
+.title {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 100px;
-  width: 40%;
+  margin-top: 5%;
+  width: 60%;
 }
 .nav-item .dropdown-item {
   font-size: 15px;
   margin-left: auto;
   margin-right: auto;
 }
-/* li {
-  list-style-type: none;
-} */
+img.bg {
+  min-height: 100%;
+  min-width: 100%;
+
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  z-index: -1;
+}
 .center {
   display: inline-flex;
   flex-flow: row wrap;
@@ -81,7 +90,7 @@ nav {
     color: #48c449;
   }
   70% {
-    color: #3086bf;
+    color: #29d2a5;
   }
   80% {
     color: #deb922;
